@@ -1,5 +1,7 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using OnlineStore.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +35,8 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 });
 
-
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
