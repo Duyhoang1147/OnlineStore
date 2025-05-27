@@ -13,6 +13,7 @@ namespace OnlineStore.Model
         public string Description { get; set; } = string.Empty;
         public float Price { get; set; }
         public int Quantity { get; set; }
+        public bool isDeleted { get; set; } =  false;
 
         [ForeignKey("subCategory")]
         public Guid SubCategoryId { get; set; }

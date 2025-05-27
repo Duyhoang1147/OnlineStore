@@ -10,7 +10,9 @@ namespace OnlineStore.Model
     public class SubCategory
     {
         public Guid SubCategoryId { get; set; } = Guid.NewGuid();
-        public String SubCategoryName { get; set; } = string.Empty;
+        public string SubCategoryName { get; set; } = string.Empty;
+        public bool isDeleted { get; set; } =  false;
+
 
         [ForeignKey("category")]
         public Guid categoryId { get; set; }
