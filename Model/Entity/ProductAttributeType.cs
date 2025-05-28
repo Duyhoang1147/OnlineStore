@@ -10,7 +10,7 @@ namespace OnlineStore.Model
     public class ProductAttributeType
     {
         [Key]
-        public Guid ProductAttributeTypeId { get; set; }
+        public Guid ProductAttributeTypeId { get; set; } = Guid.NewGuid();
         [Required]
         [MaxLength(50)]
         public string ProductAttributeTypeName { get; set; } = string.Empty;

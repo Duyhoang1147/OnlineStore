@@ -10,17 +10,19 @@ namespace OnlineStore.Model
     public class ProductAttribute
     {
         [Key]
-        public Guid ProductAttributeId { get; set; }
+        public Guid ProductAttributeId { get; set; } = Guid.NewGuid();
         [Required]
         [MaxLength]
         public string value { get; set; } = string.Empty;
 
+        [Required]
         [ForeignKey("product")]
         public Guid ProductId { get; set; }
-        public Product? product { get; set; }
+        public required Product product { get; set; }
         
+        [Required]
         [ForeignKey("productAttributeType")]
         public Guid ProductAttributeTypeId { get; set; }
-        public ProductAttributeType? productAttributeType { get; set; }
+        public required ProductAttributeType productAttributeType { get; set; }
     }
 }
