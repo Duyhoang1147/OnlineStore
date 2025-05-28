@@ -45,7 +45,7 @@ namespace OnlineStore.Service
         {
             var productAttributeType = new ProductAttributeType
             {
-                ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName
+                ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName,
             };
 
             _context.productAttributeTypes.Add(productAttributeType);
@@ -103,6 +103,34 @@ namespace OnlineStore.Service
             _context.productAttributeTypes.Remove(productAttributeType);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> AddOn(Guid productAttributeTypeId, Guid subcategoryId)
+        {
+            var productAttribute = await _context.productAttributeTypes
+                                    .Include(s => s.subCategories)
+                                    .FirstOrDefaultAsync();
+            var subCategory = await _context.SubCategories.FindAsync(subcategoryId);
+            if (productAttribute != null && subCategory != null)
+            {
+                productAttribute.subCategories!.Add(subCategory);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> TakeOut(Guid productAttributeTypeId, Guid subcategoryId)
+        {
+            var productAttribute = await _context.productAttributeTypes
+                                    .Include(s => s.subCategories)
+                                    .FirstOrDefaultAsync();
+            var subCategory = await _context.SubCategories.FindAsync(subcategoryId);
+            if (productAttribute != null && subCategory != null)
+            {
+                productAttribute.subCategories!.Remove(subCategory);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace OnlineStore.Model
 
         [ForeignKey("subCategory")]
         public Guid SubCategoryId { get; set; }
-        public required SubCategory subCategory { get; set; }
+        public SubCategory? subCategory { get; set; }
         public ICollection<ProductAttribute> productAttributes { get; set; } = new List<ProductAttribute>();
     }
 }

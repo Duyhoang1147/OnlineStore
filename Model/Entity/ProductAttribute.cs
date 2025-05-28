@@ -18,11 +18,11 @@ namespace OnlineStore.Model
         [Required]
         [ForeignKey("product")]
         public Guid ProductId { get; set; }
-        public required Product product { get; set; }
+        public  Product? product { get; set; }
         
         [Required]
         [ForeignKey("productAttributeType")]
         public Guid ProductAttributeTypeId { get; set; }
-        public required ProductAttributeType productAttributeType { get; set; }
+        public ProductAttributeType? productAttributeType { get; set; }
     }
 }

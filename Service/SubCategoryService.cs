@@ -21,7 +21,6 @@ namespace OnlineStore.Service
                     .Select(s => new SubCategoryDto
                     {
                         SubCategoryName = s.SubCategoryName,
-                        categoryName = s.category.CategoryName          
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -35,7 +34,6 @@ namespace OnlineStore.Service
                     .Select(s => new SubCategoryDto
                     {
                         SubCategoryName = s.SubCategoryName,
-                        categoryName = s.category.CategoryName
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
@@ -52,7 +50,6 @@ namespace OnlineStore.Service
             {
                 SubCategoryName = subCategoryDto.SubCategoryName,
                 categoryId = subCategoryDto.categoryId,
-                category = catogory_subCategory
             };
 
             _context.SubCategories.Add(subCategory);
@@ -72,7 +69,6 @@ namespace OnlineStore.Service
                 SubCategoryId = id,
                 SubCategoryName = subCategoryDto.SubCategoryName,
                 categoryId = subCategoryDto.categoryId,
-                category = category_subCategory
             };
 
             _context.SubCategories.Update(subCategory);

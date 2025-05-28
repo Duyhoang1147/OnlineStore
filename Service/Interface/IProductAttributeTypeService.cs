@@ -17,6 +17,7 @@ namespace OnlineStore.Service
         public Task<bool> Delete(Guid id);
         public Task<bool> Restore(Guid id);
         public Task<bool> Remove(Guid id);
-
+        public Task<bool> AddOn(Guid productAttributeTypeId, Guid subcategoryId);
+        public Task<bool> TakeOut(Guid productAttributeTypeId, Guid subcategoryId);
     }
 }

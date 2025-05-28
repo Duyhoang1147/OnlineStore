@@ -31,9 +31,7 @@ namespace OnlineStore.Service
             {
                 value = productAttributeDto.value,
                 ProductAttributeTypeId = productAttributeDto.ProductAttributeTypeId,
-                productAttributeType = productAttributeType!,
                 ProductId = productAttributeDto.ProductId,
-                product = product!
             };
 
             _context.productAttributes.Add(productAttribute);
@@ -55,9 +53,7 @@ namespace OnlineStore.Service
                 ProductAttributeId = id,
                 value = productAttributeDto.value,
                 ProductAttributeTypeId = productAttributeDto.ProductAttributeTypeId,
-                productAttributeType = productAttributeType!,
                 ProductId = productAttributeDto.ProductId,
-                product = product!
             };
 
             _context.productAttributes.Update(productAttribute);

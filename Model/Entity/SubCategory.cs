@@ -21,7 +21,7 @@ namespace OnlineStore.Model
 
         [ForeignKey("category")]
         public Guid categoryId { get; set; }
-        public required Category category { get; set; }
+        public Category? category { get; set; }
         public ICollection<Product>? products { get; set; }
         public ICollection<ProductAttributeType>? ProductAttributeTypes { get; set; }
     }

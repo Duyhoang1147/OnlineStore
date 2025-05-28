@@ -8,7 +8,7 @@ namespace OnlineStore.Service
 {
     public interface IProductService
     {
-        public Task<ICollection<Product>> Get();
+        public Task<ICollection<Product>> GetAll();
         public Task<Product> GetById(Guid id);
         public Task<Product> Create(Product product);
         public Task<Product> Update(Guid id, Product product);
