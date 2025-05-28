@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,10 @@ namespace OnlineStore.Model
 {
     public class ProductAttributeType
     {
+        [Key]
         public Guid ProductAttributeTypeId { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string ProductAttributeTypeName { get; set; } = string.Empty;
         public bool isDeleted { get; set; } =  false;
 
