@@ -1,12 +1,122 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data;
+using OnlineStore.Model;
+using OnlineStore.Model.Dto.SubCategory;
 
 namespace OnlineStore.Service
 {
-    public class SubCategoryService
+    public class SubCategoryService : ISubCategoryService
     {
-        
+        private readonly AppDbContext _context;
+
+        public SubCategoryService(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<ICollection<SubCategoryDto>> GetAll()
+        {
+            return await _context.SubCategories
+                    .Include(i => i.category)
+                    .Select(s => new SubCategoryDto
+                    {
+                        SubCategoryName = s.SubCategoryName,
+                        categoryName = s.category.CategoryName          
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
+        }
+
+        public async Task<SubCategoryDto?> GetById(Guid id)
+        {
+            return await _context.SubCategories
+                    .Include(i => i.category)
+                    .Where(c => c.SubCategoryId == id)
+                    .Select(s => new SubCategoryDto
+                    {
+                        SubCategoryName = s.SubCategoryName,
+                        categoryName = s.category.CategoryName
+                    })
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+        }
+
+        public async Task<SubCategoryDto> Create(SubCategoryDto subCategoryDto)
+        {
+            var catogory_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
+            if (catogory_subCategory == null)
+            {
+                throw new Exception("category Not Found");
+            }
+            var subCategory = new SubCategory
+            {
+                SubCategoryName = subCategoryDto.SubCategoryName,
+                categoryId = subCategoryDto.categoryId,
+                category = catogory_subCategory
+            };
+
+            _context.SubCategories.Add(subCategory);
+            await _context.SaveChangesAsync();
+            return subCategoryDto;
+        }
+
+        public async Task<SubCategoryDto> Update(SubCategoryDto subCategoryDto, Guid id)
+        {
+            var category_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
+            if (category_subCategory == null)
+            {
+                throw new Exception("Category Not Found");
+            }
+            var subCategory = new SubCategory
+            {
+                SubCategoryId = id,
+                SubCategoryName = subCategoryDto.SubCategoryName,
+                categoryId = subCategoryDto.categoryId,
+                category = category_subCategory
+            };
+
+            _context.SubCategories.Update(subCategory);
+            await _context.SaveChangesAsync();
+            return subCategoryDto;
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            var subcategory = await _context.SubCategories.FindAsync(id);
+            if (subcategory == null)
+            {
+                return false;
+            }
+
+            subcategory.isDeleted = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Restore(Guid id)
+        {
+            var subcategory = await _context.SubCategories.FindAsync(id);
+            if (subcategory == null)
+            {
+                return false;
+            }
+
+            subcategory.isDeleted = false;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Remove(Guid id)
+        {
+            var subCategory = await _context.SubCategories.FindAsync(id);
+            if (subCategory == null)
+            {
+                return false;
+            }
+
+            _context.SubCategories.Remove(subCategory);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

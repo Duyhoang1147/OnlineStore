@@ -53,7 +53,7 @@ namespace OnlineStore.Service
         {
             var category = new Category
             {
-                CategoryId = categoryDto.CategoryId,
+                CategoryId = id,
                 CategoryName = categoryDto.CategoryName
             };
 
@@ -99,7 +99,6 @@ namespace OnlineStore.Service
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return true;
-
         }
     }
 }
