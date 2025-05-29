@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Service;
 
 namespace OnlineStore.Controller
 {
@@ -10,5 +11,11 @@ namespace OnlineStore.Controller
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
+        private readonly ProductService _service;
+
+        public ProductController(ProductService service)
+        {
+            _service = service;
+        }
     }
 }

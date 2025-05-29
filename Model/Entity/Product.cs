@@ -24,6 +24,7 @@ namespace OnlineStore.Model
         public int Quantity { get; set; }
         public bool isDeleted { get; set; } =  false;
 
+        [Required]
         [ForeignKey("subCategory")]
         public Guid SubCategoryId { get; set; }
         public SubCategory? subCategory { get; set; }

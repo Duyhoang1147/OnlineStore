@@ -18,8 +18,10 @@ namespace OnlineStore.Service
         public async Task<ICollection<CategoryDto>> GetAll()
         {
             return await _context.Categories
+                    .Where(c => c.isDeleted == false)
                     .Select(s => new CategoryDto
                     {
+                        CategoryId = s.CategoryId,
                         CategoryName = s.CategoryName
                     })
                     .AsNoTracking()
@@ -32,6 +34,7 @@ namespace OnlineStore.Service
                     .Where(c => c.CategoryId == id)
                     .Select(s => new CategoryDto
                     {
+                        CategoryId = s.CategoryId,
                         CategoryName = s.CategoryName
                     })
                     .FirstOrDefaultAsync();

@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OnlineStore.Data;
+using OnlineStore.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();  
 
 builder.Services.AddSwaggerGen(c =>
 {
