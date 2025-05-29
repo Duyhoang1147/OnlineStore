@@ -66,6 +66,10 @@ namespace OnlineStore.Controller
                 return BadRequest("data empty");
             }
             var product = await _service.Create(categoryDto);
+            if (product == false)
+            {
+                return BadRequest("Create fails");
+            }
             return Ok("Create success!");
         }
 
@@ -88,7 +92,7 @@ namespace OnlineStore.Controller
             }
 
             var category = await _service.Update(categoryDto, id);
-            if (category == null)
+            if (category == false)
             {
                 return BadRequest("Id Not Found");
             }

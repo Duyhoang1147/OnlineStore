@@ -40,29 +40,43 @@ namespace OnlineStore.Service
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<CategoryDto> Create(CategoryDto categoryDto)
+        public async Task<bool> Create(CategoryDto categoryDto)
         {
-            var category = new Category
+            try
             {
-                CategoryName = categoryDto.CategoryName
-            };
+                var category = new Category
+                {
+                    CategoryName = categoryDto.CategoryName
+                };
 
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-            return categoryDto;
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public async Task<CategoryDto> Update(CategoryDto categoryDto, Guid id)
+        public async Task<bool> Update(CategoryDto categoryDto, Guid id)
         {
-            var category = new Category
+            try
             {
-                CategoryId = id,
-                CategoryName = categoryDto.CategoryName
-            };
+                var category = new Category
+                {
+                    CategoryId = id,
+                    CategoryName = categoryDto.CategoryName
+                };
 
-            _context.Categories.Update(category);
-            await _context.SaveChangesAsync();
-            return categoryDto;
+                _context.Categories.Update(category);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> Delete(Guid id)

@@ -6,8 +6,8 @@ namespace OnlineStore.Service
     {
         public Task<ICollection<SubCategoryDto>> GetAll();
         public Task<SubCategoryDto?> GetById(Guid id);
-        public Task<SubCategoryDto> Create(SubCategoryDto SubCategoryDto);
-        public Task<SubCategoryDto> Update(SubCategoryDto SubCategoryDto, Guid id);
+        public Task<bool> Create(SubCategoryDto SubCategoryDto);  // Changed return type
+        public Task<bool> Update(SubCategoryDto SubCategoryDto, Guid id);  // Changed return type
         public Task<bool> Delete(Guid id);
         public Task<bool> Restore(Guid id);
         public Task<bool> Remove(Guid id);

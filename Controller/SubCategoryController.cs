@@ -37,7 +37,7 @@ namespace OnlineStore.Controller
         public async Task<IActionResult> Create(SubCategoryDto subCategoryDto)
         {
             var subCategory = await _service.Create(subCategoryDto);
-            if (subCategory == null)
+            if (subCategory == false)
             {
                 return BadRequest("Creare SubCategory fails");
             }
@@ -48,7 +48,7 @@ namespace OnlineStore.Controller
         public async Task<IActionResult> Update(SubCategoryDto subCategoryDto, Guid id)
         {
             var subCategory = await _service.Update(subCategoryDto, id);
-            if (subCategory == null)
+            if (subCategory == false)
             {
                 return BadRequest("Update subCategory fails");
             }

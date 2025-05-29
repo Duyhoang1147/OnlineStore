@@ -39,41 +39,57 @@ namespace OnlineStore.Service
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<SubCategoryDto> Create(SubCategoryDto subCategoryDto)
+        public async Task<bool> Create(SubCategoryDto subCategoryDto)
         {
-            var catogory_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
-            if (catogory_subCategory == null)
+            try
             {
-                throw new Exception("category Not Found");
-            }
-            var subCategory = new SubCategory
-            {
-                SubCategoryName = subCategoryDto.SubCategoryName,
-                categoryId = subCategoryDto.categoryId,
-            };
+                var category_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
+                if (category_subCategory == null)
+                {
+                    return false;
+                }
 
-            _context.SubCategories.Add(subCategory);
-            await _context.SaveChangesAsync();
-            return subCategoryDto;
+                var subCategory = new SubCategory
+                {
+                    SubCategoryName = subCategoryDto.SubCategoryName,
+                    categoryId = subCategoryDto.categoryId,
+                };
+
+                _context.SubCategories.Add(subCategory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public async Task<SubCategoryDto> Update(SubCategoryDto subCategoryDto, Guid id)
+        public async Task<bool> Update(SubCategoryDto subCategoryDto, Guid id)
         {
-            var category_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
-            if (category_subCategory == null)
+            try
             {
-                throw new Exception("Category Not Found");
-            }
-            var subCategory = new SubCategory
-            {
-                SubCategoryId = id,
-                SubCategoryName = subCategoryDto.SubCategoryName,
-                categoryId = subCategoryDto.categoryId,
-            };
+                var category_subCategory = await _context.Categories.FindAsync(subCategoryDto.categoryId);
+                if (category_subCategory == null)
+                {
+                    return false;
+                }
 
-            _context.SubCategories.Update(subCategory);
-            await _context.SaveChangesAsync();
-            return subCategoryDto;
+                var subCategory = new SubCategory
+                {
+                    SubCategoryId = id,
+                    SubCategoryName = subCategoryDto.SubCategoryName,
+                    categoryId = subCategoryDto.categoryId,
+                };
+
+                _context.SubCategories.Update(subCategory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> Delete(Guid id)

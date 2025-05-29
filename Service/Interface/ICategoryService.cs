@@ -11,8 +11,8 @@ namespace OnlineStore.Service
     {
         public Task<ICollection<CategoryDto>> GetAll();
         public Task<CategoryDto?> GetById(Guid id);
-        public Task<CategoryDto> Create(CategoryDto categoryDto);
-        public Task<CategoryDto> Update(CategoryDto categoryDto, Guid id);
+        public Task<bool> Create(CategoryDto categoryDto);  // Changed return type
+        public Task<bool> Update(CategoryDto categoryDto, Guid id);  // Changed return type
         public Task<bool> Delete(Guid id);
         public Task<bool> Restore(Guid id);
         public Task<bool> Remove(Guid id);

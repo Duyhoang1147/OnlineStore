@@ -41,29 +41,43 @@ namespace OnlineStore.Service
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<ProductAttributeTypeDto> Create(ProductAttributeTypeDto productAttributeTypeDto)
+        public async Task<bool> Create(ProductAttributeTypeDto productAttributeTypeDto)
         {
-            var productAttributeType = new ProductAttributeType
+            try
             {
-                ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName,
-            };
+                var productAttributeType = new ProductAttributeType
+                {
+                    ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName,
+                };
 
-            _context.productAttributeTypes.Add(productAttributeType);
-            await _context.SaveChangesAsync();
-            return productAttributeTypeDto;
+                _context.productAttributeTypes.Add(productAttributeType);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public async Task<ProductAttributeTypeDto> Update(ProductAttributeTypeDto productAttributeTypeDto, Guid id)
+        public async Task<bool> Update(ProductAttributeTypeDto productAttributeTypeDto, Guid id)
         {
-            var productAttributeType = new ProductAttributeType
+            try
             {
-                ProductAttributeTypeId = id,
-                ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName
-            };
+                var productAttributeType = new ProductAttributeType
+                {
+                    ProductAttributeTypeId = id,
+                    ProductAttributeTypeName = productAttributeTypeDto.ProuctAttributeTypeName
+                };
 
-            _context.productAttributeTypes.Update(productAttributeType);
-            await _context.SaveChangesAsync();
-            return productAttributeTypeDto;
+                _context.productAttributeTypes.Update(productAttributeType);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> Delete(Guid id)
