@@ -7,6 +7,6 @@ namespace OnlineStore.Model.Dto.SubCategory
         public Guid SubCategoryId { get; set; }
         public required string SubCategoryName { get; set; }
         public Guid categoryId { get; set; }
-        public string categoryName { get; set; } = string.Empty;
+        public string? categoryName { get; set; } = string.Empty;
     }
 }

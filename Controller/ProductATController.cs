@@ -107,7 +107,7 @@ namespace OnlineStore.Controller
             return Ok("Restore success");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {
             var productAT = await _service.Remove(id);
