@@ -44,7 +44,7 @@ namespace OnlineStore.Controller
             return Ok("Create success");
         }
 
-        [HttpPut]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(SubCategoryDto subCategoryDto, Guid id)
         {
             var subCategory = await _service.Update(subCategoryDto, id);
@@ -55,7 +55,7 @@ namespace OnlineStore.Controller
             return Ok("Update success");
         }
 
-        [HttpPut]
+        [HttpPut("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var subCategory = await _service.Delete(id);
@@ -66,7 +66,7 @@ namespace OnlineStore.Controller
             return Ok("Delete successs");
         }
 
-        [HttpPut]
+        [HttpPut("restore/{id}")]
         public async Task<IActionResult> Restore(Guid id)
         {
             var subCategory = await _service.Restore(id);
@@ -77,7 +77,7 @@ namespace OnlineStore.Controller
             return Ok("Restore success");
         }
 
-        [HttpDelete]
+        [HttpDelete("remove/{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {
             var subCategory = await _service.Remove(id);

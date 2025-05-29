@@ -48,6 +48,28 @@ namespace OnlineStore.Controller
             return Ok("Create success");
         }
 
+        [HttpPost("addon")]
+        public async Task<IActionResult> AddOn(Guid Id_PAT, Guid Id_SC)
+        {
+            var addOn = await _service.AddOn(Id_PAT, Id_SC);
+            if (addOn == false)
+            {
+                return BadRequest("Add on fails");
+            }
+            return Ok("Add on success");
+        }
+
+        [HttpPost("takeout")]
+        public async Task<IActionResult> TakeOut(Guid Id_PAT, Guid Id_SC)
+        {
+            var takeOut = await _service.TakeOut(Id_PAT, Id_SC);
+            if (takeOut == false)
+            {
+                return BadRequest("Take out fails");
+            }
+            return Ok("Take out success");
+        }
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductAttributeTypeDto productAttributeTypeDto)
         {

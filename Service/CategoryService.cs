@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using OnlineStore.Data;
 using OnlineStore.Model;
+using OnlineStore.Model.Dto;
 using OnlineStore.Model.Dto.Category;
+using OnlineStore.Model.Dto.Menu;
 
 namespace OnlineStore.Service
 {
@@ -25,6 +27,14 @@ namespace OnlineStore.Service
                         CategoryName = s.CategoryName
                     })
                     .AsNoTracking()
+                    .ToListAsync();
+        }
+
+        public async Task<ICollection<Category>> GetMenu()
+        {
+            return await _context.Categories
+                    .Include(c => c.SubCategoryId!)
+                    .ThenInclude(sc => sc.ProductAttributeTypes!)
                     .ToListAsync();
         }
 
