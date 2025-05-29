@@ -20,7 +20,10 @@ namespace OnlineStore.Service
                     .Include(i => i.category)
                     .Select(s => new SubCategoryDto
                     {
+                        SubCategoryId = s.SubCategoryId,
                         SubCategoryName = s.SubCategoryName,
+                        categoryId  = s.categoryId,
+                        categoryName = s.category!.CategoryName,
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -33,7 +36,10 @@ namespace OnlineStore.Service
                     .Where(c => c.SubCategoryId == id)
                     .Select(s => new SubCategoryDto
                     {
+                        SubCategoryId = s.SubCategoryId,
                         SubCategoryName = s.SubCategoryName,
+                        categoryId  = s.categoryId,
+                        categoryName = s.category!.CategoryName,
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
