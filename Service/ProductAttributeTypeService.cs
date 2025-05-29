@@ -23,7 +23,9 @@ namespace OnlineStore.Service
             return await _context.productAttributeTypes
                     .Select(s => new ProductAttributeTypeDto
                     {
-                        ProuctAttributeTypeName = s.ProductAttributeTypeName
+                        ProductAttributeTypeId = s.ProductAttributeTypeId,
+                        ProuctAttributeTypeName = s.ProductAttributeTypeName,
+                        SubCategoryId = s.subCategories!.Select(c => c.SubCategoryName).ToList()
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -35,7 +37,9 @@ namespace OnlineStore.Service
                     .Where(c => c.ProductAttributeTypeId == id)
                     .Select(s => new ProductAttributeTypeDto
                     {
-                        ProuctAttributeTypeName = s.ProductAttributeTypeName
+                        ProductAttributeTypeId = s.ProductAttributeTypeId,
+                        ProuctAttributeTypeName = s.ProductAttributeTypeName,
+                        SubCategoryId = s.subCategories!.Select(c => c.SubCategoryName).ToList()
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
@@ -128,6 +132,7 @@ namespace OnlineStore.Service
             if (productAttribute != null && subCategory != null)
             {
                 productAttribute.subCategories!.Add(subCategory);
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -142,6 +147,7 @@ namespace OnlineStore.Service
             if (productAttribute != null && subCategory != null)
             {
                 productAttribute.subCategories!.Remove(subCategory);
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;

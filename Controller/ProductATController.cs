@@ -48,7 +48,7 @@ namespace OnlineStore.Controller
             return Ok("Create success");
         }
 
-        [HttpPost("addon")]
+        [HttpPost("addon/{Id_PAT}/{Id_SC}")]
         public async Task<IActionResult> AddOn(Guid Id_PAT, Guid Id_SC)
         {
             var addOn = await _service.AddOn(Id_PAT, Id_SC);
@@ -59,7 +59,7 @@ namespace OnlineStore.Controller
             return Ok("Add on success");
         }
 
-        [HttpPost("takeout")]
+        [HttpPost("takeout/{Id_PAT}/{Id_SC}")]
         public async Task<IActionResult> TakeOut(Guid Id_PAT, Guid Id_SC)
         {
             var takeOut = await _service.TakeOut(Id_PAT, Id_SC);

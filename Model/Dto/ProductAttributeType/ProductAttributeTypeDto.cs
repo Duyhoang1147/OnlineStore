@@ -10,6 +10,6 @@ namespace OnlineStore.Model.Dto.ProductAttributeType
         public Guid ProductAttributeTypeId { get; set; }
         public string ProuctAttributeTypeName { get; set; } = string.Empty;
 
-        public Guid SubCategoryId { get; set; }
+        public List<string> SubCategoryId { get; set; } = new List<string>();
     }
 }
