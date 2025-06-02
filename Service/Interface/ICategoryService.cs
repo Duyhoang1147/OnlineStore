@@ -11,7 +11,7 @@ namespace OnlineStore.Service
     public interface ICategoryService
     {
         public Task<ICollection<CategoryDto>> GetAll();
-        public Task<ICollection<Category>> GetMenu();
+        public Task<ICollection<CategoryMenuDto>> GetMenu();
         public Task<CategoryDto?> GetById(Guid id);
         public Task<bool> Create(CategoryDto categoryDto);  // Changed return type
         public Task<bool> Update(CategoryDto categoryDto, Guid id);  // Changed return type

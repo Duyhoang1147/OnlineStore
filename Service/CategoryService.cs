@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using OnlineStore.Controller;
 using OnlineStore.Data;
 using OnlineStore.Model;
 using OnlineStore.Model.Dto;
@@ -30,11 +31,25 @@ namespace OnlineStore.Service
                     .ToListAsync();
         }
 
-        public async Task<ICollection<Category>> GetMenu()
+        public async Task<ICollection<CategoryMenuDto>> GetMenu()
         {
             return await _context.Categories
-                    .Include(c => c.SubCategoryId!)
-                    .ThenInclude(sc => sc.ProductAttributeTypes!)
+                    .Select(s => new CategoryMenuDto
+                    {
+                        categoryId = s.SubCategoryId!.ToString()!,
+                        categoryName = s.CategoryName,
+                        subCategory_C = s.SubCategoryId.Select(s => new SubCategoryMenuDto
+                        {
+                            subCategoryId = s.SubCategoryId.ToString(),
+                            subCategoryName = s.SubCategoryName,
+                            productATName_SC = s.ProductAttributeTypes!.Select(s => new ProductAttributeTypeMenuDto
+                            {
+                                productATId = s.ProductAttributeTypeId.ToString(),
+                                productATName = s.ProductAttributeTypeName
+                            }).ToList()
+                        }).ToList()
+
+                    })
                     .ToListAsync();
         }
 
