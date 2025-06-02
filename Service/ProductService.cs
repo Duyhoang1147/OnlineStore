@@ -29,7 +29,6 @@ namespace OnlineStore.Service
                         Quantity = s.Quantity,
                         categoryName = s.subCategory != null && s.subCategory.category != null ? s.subCategory.category.CategoryName : "No Data",
                         SubCategoryName = s.subCategory != null ? s.subCategory.SubCategoryName : null,
-                        ProductAttributeName = s.productAttributes.Select(pa => pa.productAttributeType!.ProductAttributeTypeName).ToList(),
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -47,7 +46,6 @@ namespace OnlineStore.Service
                         Quantity = s.Quantity,
                         categoryName = s.subCategory != null && s.subCategory.category != null ? s.subCategory.category.CategoryName : "No Data",
                         SubCategoryName = s.subCategory != null ? s.subCategory.SubCategoryName : null,
-                        ProductAttributeName = s.productAttributes.Select(pa => pa.productAttributeType!.ProductAttributeTypeName).ToList(),
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
@@ -55,9 +53,19 @@ namespace OnlineStore.Service
 
         public async Task<ProductDto> Create(ProductDto productDto)
         {
-            var productAttribute = _context.productAttributes
-                                .Where(c => productDto.ProductAttributeId.Contains(c.ProductAttributeId))
-                                .ToList();
+            var subCategory = await _context.SubCategories
+                            .Include(i => i.ProductAttributeTypes)
+                            .FirstOrDefaultAsync(s => s.SubCategoryId == productDto.SubCategoryId);
+            if (subCategory == null)
+            {
+                throw new Exception("SubCategory Not Found");
+            }
+
+            var validAttributeTypeIds = subCategory.ProductAttributeTypes!
+                                      .Select(pat => pat.ProductAttributeTypeId)
+                                        .ToList();
+
+
             var product = new Product
             {
                 ProductName = productDto.ProductName,
@@ -65,9 +73,24 @@ namespace OnlineStore.Service
                 Price = productDto.Price,
                 Quantity = productDto.Quantity,
                 SubCategoryId = productDto.SubCategoryId,
-                productAttributes = productAttribute
             };
 
+            foreach (var productAT in productDto.productAttributeDtos)
+            {
+                if (!validAttributeTypeIds.Contains(productAT.ProductAttributeId))
+                {
+                    throw new Exception("productAttributeType is not validate in subCategory");
+                }
+
+                var productAttribute = new ProductAttribute
+                {
+                    value = productAT.value,
+                    ProductId = product.ProductId,
+                    ProductAttributeTypeId = productAT.ProductAttributeTypeId
+                };
+
+                _context.productAttributes.Add(productAttribute);
+            }
             _context.products.Add(product);
             await _context.SaveChangesAsync();
             return productDto;
@@ -75,21 +98,35 @@ namespace OnlineStore.Service
 
         public async Task<ProductDto> Update(ProductDto productDto, Guid id)
         {
-            var productAttribute = _context.productAttributes
-                                .Where(c => productDto.ProductAttributeId.Contains(c.ProductAttributeId))
-                                .ToList();
-            var product = new Product
-            {
-                ProductId = id,
-                ProductName = productDto.ProductName,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                Quantity = productDto.Quantity,
-                SubCategoryId = productDto.SubCategoryId,
-                productAttributes = productAttribute
-            };
+            var product = await _context.products
+                .Include(p => p.productAttributes)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
 
-            _context.products.Update(product);
+            if (product == null)
+            {
+                throw new Exception($"Product with ID {id} not found");
+            }
+
+            product.ProductName = productDto.ProductName;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.Quantity = productDto.Quantity;
+
+            foreach (var attrDto in productDto.productAttributeDtos)
+            {
+                var existingAttribute = product.productAttributes
+                    .FirstOrDefault(pa => pa.ProductAttributeTypeId == attrDto.ProductAttributeTypeId);
+
+                if (existingAttribute != null)
+                {
+                    existingAttribute.value = attrDto.value;
+                }
+                else
+                {
+                    throw new Exception($"ProductAttribute with TypeID {attrDto.ProductAttributeTypeId} not found for Product");
+                }
+            }
+
             await _context.SaveChangesAsync();
             return productDto;
         }

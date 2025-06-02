@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OnlineStore.Model.Dto.ProductAttribute;
 
 namespace OnlineStore.Model.Dto.Product
 {
@@ -16,7 +17,6 @@ namespace OnlineStore.Model.Dto.Product
         public string? categoryName { get; set; } = string.Empty;
         public Guid SubCategoryId { get; set; }
         public string? SubCategoryName { get; set; } = string.Empty;
-        public List<Guid> ProductAttributeId { get; set; } = new List<Guid>();
-        public List<string>? ProductAttributeName { get; set; } = new List<string>();
+        public List<ProductAttributeDto> productAttributeDtos { get; set; } = new List<ProductAttributeDto>();
     }
 }

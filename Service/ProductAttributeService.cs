@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Model;
@@ -18,48 +19,19 @@ namespace OnlineStore.Service
             _context = context;
         }
 
-        public async Task<ProductAttributeDto> Create(ProductAttributeDto productAttributeDto)
+        public async Task<ProductAttributeDto> Create([FromBody] ProductAttributeDto productAttributeDto, Guid productId)
         {
-            var product = await _context.products.FindAsync(productAttributeDto.ProductAttributeId);
-            var productAttributeType = await _context.productAttributeTypes.FindAsync(productAttributeDto.ProductAttributeTypeId);
-            if (product == null && productAttributeType == null)
-            {
-                throw new Exception("product or ProductAttribute Not Found");
-            }
 
             var productAttribute = new ProductAttribute
             {
                 value = productAttributeDto.value,
-                ProductAttributeTypeId = productAttributeDto.ProductAttributeTypeId,
-                ProductId = productAttributeDto.ProductId,
+                ProductId = productId,
+                ProductAttributeTypeId = productAttributeDto.ProductAttributeId
             };
-
             _context.productAttributes.Add(productAttribute);
             await _context.SaveChangesAsync();
             return productAttributeDto;
-        }
-
-        public async Task<ProductAttributeDto> Update(ProductAttributeDto productAttributeDto, Guid id)
-        {
-            var product = await _context.products.FindAsync(productAttributeDto.ProductAttributeId);
-            var productAttributeType = await _context.productAttributeTypes.FindAsync(productAttributeDto.ProductAttributeTypeId);
-            if (product == null && productAttributeType == null)
-            {
-                throw new Exception("product or ProductAttribute Not Found");
-            }
-
-            var productAttribute = new ProductAttribute
-            {
-                ProductAttributeId = id,
-                value = productAttributeDto.value,
-                ProductAttributeTypeId = productAttributeDto.ProductAttributeTypeId,
-                ProductId = productAttributeDto.ProductId,
-            };
-
-            _context.productAttributes.Update(productAttribute);
-            await _context.SaveChangesAsync();
-            return productAttributeDto;
-        }
+        } 
 
         public async Task<bool> Remove(Guid id)
         {

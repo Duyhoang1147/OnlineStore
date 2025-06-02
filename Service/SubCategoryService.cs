@@ -22,8 +22,11 @@ namespace OnlineStore.Service
                     {
                         SubCategoryId = s.SubCategoryId,
                         SubCategoryName = s.SubCategoryName,
-                        categoryId  = s.categoryId,
+                        categoryId = s.categoryId,
                         categoryName = s.category!.CategoryName,
+                        productATs = s.ProductAttributeTypes!.Select(
+                            pat => pat.ProductAttributeTypeId.ToString()
+                        ).ToList()
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -38,8 +41,10 @@ namespace OnlineStore.Service
                     {
                         SubCategoryId = s.SubCategoryId,
                         SubCategoryName = s.SubCategoryName,
-                        categoryId  = s.categoryId,
+                        categoryId = s.categoryId,
                         categoryName = s.category!.CategoryName,
+                        productATs = s.ProductAttributeTypes!.Select(pat => pat.ProductAttributeTypeId.ToString())
+                        .ToList()
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();

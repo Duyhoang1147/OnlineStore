@@ -126,6 +126,7 @@ namespace OnlineStore.Service
         public async Task<bool> AddOn(Guid productAttributeTypeId, Guid subcategoryId)
         {
             var productAttribute = await _context.productAttributeTypes
+                                    .Where(c => c.ProductAttributeTypeId == productAttributeTypeId)
                                     .Include(s => s.subCategories)
                                     .FirstOrDefaultAsync();
             var subCategory = await _context.SubCategories.FindAsync(subcategoryId);
@@ -141,6 +142,7 @@ namespace OnlineStore.Service
         public async Task<bool> TakeOut(Guid productAttributeTypeId, Guid subcategoryId)
         {
             var productAttribute = await _context.productAttributeTypes
+                                    .Where(c => c.ProductAttributeTypeId == productAttributeTypeId)
                                     .Include(s => s.subCategories)
                                     .FirstOrDefaultAsync();
             var subCategory = await _context.SubCategories.FindAsync(subcategoryId);

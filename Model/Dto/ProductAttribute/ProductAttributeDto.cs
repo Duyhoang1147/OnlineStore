@@ -11,7 +11,5 @@ namespace OnlineStore.Model.Dto.ProductAttribute
         public string value { get; set; } = string.Empty;
         public Guid ProductAttributeTypeId { get; set; }
         public string ProductAttributeTypeName { get; set; } = string.Empty;
-        public Guid ProductId { get; set; }
-        public string ProductName { get; set; } = string.Empty;
     }
 }
