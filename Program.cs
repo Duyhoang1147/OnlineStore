@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IProductAttributeTypeService, ProductAttributeTypeService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddSwaggerGen(c =>
 {

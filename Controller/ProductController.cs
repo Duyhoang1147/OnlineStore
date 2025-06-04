@@ -21,18 +21,21 @@ namespace OnlineStore.Controller
             _service = service;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var Products = await _service.GetAll();
             return Ok(Products);
         }
 
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _service.GetById(id);
             return Ok(product);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductDto productDto)
         {
             try
@@ -44,16 +47,18 @@ namespace OnlineStore.Controller
                 }
                 return Ok("create success");
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("create fails");
+                return BadRequest("create fails: " + ex);
             }
         }
 
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] ProductDto productDto, Guid id)
         {
             try
             {
+                Console.WriteLine("Update run");
                 var product = await _service.Update(productDto, id);
                 if (product == null)
                 {
@@ -67,6 +72,7 @@ namespace OnlineStore.Controller
             }
         }
 
+        [HttpPut("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _service.Delete(id);
@@ -77,6 +83,7 @@ namespace OnlineStore.Controller
             return Ok("Delete success");
         }
 
+        [HttpPut("restore/{id}")]
         public async Task<IActionResult> Restore(Guid id)
         {
             var result = await _service.Restore(id);
@@ -87,6 +94,7 @@ namespace OnlineStore.Controller
             return Ok("Restore success");
         }
 
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {
             var result = await _service.Remove(id);

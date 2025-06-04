@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Model;
 using OnlineStore.Model.Dto.Product;
+using OnlineStore.Model.Dto.ProductAttribute;
 
 namespace OnlineStore.Service
 {
@@ -23,12 +24,22 @@ namespace OnlineStore.Service
             return await _context.products
                     .Select(s => new ProductDto
                     {
+                        ProductId = s.ProductId,
                         ProductName = s.ProductName,
                         Description = s.Description,
                         Price = s.Price,
                         Quantity = s.Quantity,
-                        categoryName = s.subCategory != null && s.subCategory.category != null ? s.subCategory.category.CategoryName : "No Data",
-                        SubCategoryName = s.subCategory != null ? s.subCategory.SubCategoryName : null,
+                        CategoryId = s.subCategory!.categoryId,
+                        categoryName = s.subCategory.category!.CategoryName,
+                        SubCategoryId = s.SubCategoryId,
+                        SubCategoryName = s.subCategory!.SubCategoryName,
+                        productAttributeDtos = s.productAttributes.Select(s => new ProductAttributeDto
+                        {
+                            ProductAttributeId = s.ProductAttributeId,
+                            value = s.value,
+                            ProductAttributeTypeId = s.ProductAttributeTypeId,
+                            ProductAttributeTypeName = s.productAttributeType!.ProductAttributeTypeName
+                        }).ToList()
                     })
                     .AsNoTracking()
                     .ToListAsync();
@@ -40,12 +51,22 @@ namespace OnlineStore.Service
                     .Where(c => c.ProductId == id)
                     .Select(s => new ProductDto
                     {
+                        ProductId = s.ProductId,
                         ProductName = s.ProductName,
                         Description = s.Description,
                         Price = s.Price,
                         Quantity = s.Quantity,
-                        categoryName = s.subCategory != null && s.subCategory.category != null ? s.subCategory.category.CategoryName : "No Data",
-                        SubCategoryName = s.subCategory != null ? s.subCategory.SubCategoryName : null,
+                        CategoryId = s.subCategory!.categoryId,
+                        categoryName = s.subCategory.category!.CategoryName,
+                        SubCategoryId = s.SubCategoryId,
+                        SubCategoryName = s.subCategory!.SubCategoryName,
+                        productAttributeDtos = s.productAttributes.Select(s => new ProductAttributeDto
+                        {
+                            ProductAttributeId = s.ProductAttributeId,
+                            value = s.value,
+                            ProductAttributeTypeId = s.ProductAttributeTypeId,
+                            ProductAttributeTypeName = s.productAttributeType!.ProductAttributeTypeName
+                        }).ToList()
                     })
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
@@ -77,7 +98,7 @@ namespace OnlineStore.Service
 
             foreach (var productAT in productDto.productAttributeDtos)
             {
-                if (!validAttributeTypeIds.Contains(productAT.ProductAttributeId))
+                if (!validAttributeTypeIds.Contains(productAT.ProductAttributeTypeId))
                 {
                     throw new Exception("productAttributeType is not validate in subCategory");
                 }
@@ -101,7 +122,6 @@ namespace OnlineStore.Service
             var product = await _context.products
                 .Include(p => p.productAttributes)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
-
             if (product == null)
             {
                 throw new Exception($"Product with ID {id} not found");

@@ -1,0 +1,45 @@
+{
+  "productName": "SSD kingston 512GB",
+  "description": "SSD kingston",
+  "price": 1500000,
+  "quantity": 3,
+  "subCategoryId": "2ebf7e33-ffec-4489-b1e3-b541a676cb59",
+  "productAttributeDtos": [
+    {
+      "value": "128GB",
+      "productAttributeTypeId": "813fc2f5-01a9-46b5-8b89-60d9d599f7d8"
+    },
+    {
+      "value": "3GB/s",
+      "productAttributeTypeId": "ad4ce77c-2044-4816-a942-386ab73ccc93"
+    }
+  ]
+}
+
+{
+  "productName": "Cáp sạc Iphone",
+  "description": "Cáp sạc",
+  "price": 150000,
+  "quantity": 8,
+  "subCategoryId": "a063fc5a-87a4-40ae-a2c6-14e7b936038d",
+  "productAttributeDtos": [
+    {
+      "value": "10m",
+      "productAttributeTypeId": "3c9d19fa-b4e5-4c04-bf94-4c25d810bc85"
+    },
+  ]
+}
+
+{
+  "productName": "Cáp sạc Iphone",
+  "description": "Cáp sạc",
+  "price": 150000,
+  "quantity": 8,
+  "subCategoryId": "a063fc5a-87a4-40ae-a2c6-14e7b936038d",
+  "productAttributeDtos": [
+    {
+      "value": "10m",
+      "productAttributeTypeId": "3c9d19fa-b4e5-4c04-bf94-4c25d810bc85"
+    },
+  ]
+}
