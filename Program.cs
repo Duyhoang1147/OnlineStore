@@ -1,5 +1,8 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using OnlineStore.Data;
+using OnlineStore.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+builder.Services.AddScoped<IProductAttributeTypeService, ProductAttributeTypeService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "SchoolManagerment_WebAPI",
         Version = "v1",
@@ -33,7 +41,8 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 });
 
-
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
