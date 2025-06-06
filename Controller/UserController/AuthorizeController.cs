@@ -14,6 +14,8 @@ using OnlineStore.Model.UserEntity;
 
 namespace OnlineStore.Controller.UserController
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AuthorizeController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -26,8 +28,7 @@ namespace OnlineStore.Controller.UserController
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
@@ -44,13 +45,12 @@ namespace OnlineStore.Controller.UserController
             var result = await _signManager.PasswordSignInAsync(user!, loginDto.Password, loginDto.RememberMe, true);
             if (result.Succeeded)
             {
-                return Ok("Login successful");
+                return Ok(user);
             }
             return Unauthorized("Email or Password wrong");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
@@ -75,15 +75,23 @@ namespace OnlineStore.Controller.UserController
             {
                 return Ok("Rgister successful");
             }
-            return BadRequest("Server error");
+            return BadRequest(userResult.Errors.Select(e => e.Description));
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signManager.SignOutAsync();
+            return Ok("logout");
+        }
+
+        [HttpGet("me")]
         public async Task<IActionResult> GetUser()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                BadRequest("Not logged in");
+                return BadRequest("Not logged in");
             }
             return Ok(user);
         }
